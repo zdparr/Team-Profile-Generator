@@ -14,11 +14,14 @@ This is a command line interface (CLI) tool that will generate HTML code that co
 
 ## Install
 
-To install download or clone the repo. Navigate into the cloned directory and run node app.js. This will launch the prompts that gathers the required team information.
+To install download or clone the repo. Navigate into the cloned directory and run npm install. This will launch the the installation of all required libraries.
 
 ## Usage
 
-Navigate into the cloned directory and run node app.js. Then follow all prompts with the required information. Once that is complete your HTML page will will output to an output folder.
+If not already complete, navigate into the cloned directory and run node app.js. Then follow all prompts with the required information. Once that is complete your HTML page will will output to an output folder.
+
+![sc1](https://user-images.githubusercontent.com/35375289/92425691-9f8fd200-f14d-11ea-9f4e-e3428afc0111.png)
+
 
 ## Questions
 

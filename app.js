@@ -63,7 +63,6 @@ function createMember() {
     ])
         // create a selector for role based information
         .then(response => {
-            console.log(response)
             employeeName = response.name
             employeeID = response.id
             employeeEmail = response.email
@@ -96,7 +95,6 @@ function createMember() {
             ])
                 // create a team member isntance
                 .then(res => {
-                    console.log(res)
                     if (employeeRole === "Manager") {
                         newTeamMember = new Manager(employeeName, employeeID, employeeEmail, res.roleType)
                     } else if (employeeRole === "Engineer") {
@@ -105,7 +103,6 @@ function createMember() {
                         newTeamMember = new Intern(employeeName, employeeID, employeeEmail, res.roleType)
                     }
                     // add instance to team member array
-                    //consonle.log(newTeamMember)
                     teamMemberArr.push(newTeamMember)
                     // loop through team members until complete
                     if (res.moreMember === "yes") {

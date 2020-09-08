@@ -1,7 +1,5 @@
 # Team-Profile-Generator
 
-Team Profile Generator
-
 ## Description
 
 This is a command line interface (CLI) tool that will generate HTML code that contains your teams information

@@ -9,7 +9,17 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+// array to hold team member data
 const teamMemberArr = [];
+
+// starting variables for employee information
+let employeeName = "";
+let employeeID = "";
+let employeeEmail = "";
+let employeeRole = "";
+let roleType = "";
+let newTeamMember = "";
+
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -52,14 +62,18 @@ function createMember() {
         }
     ])
         // create a selector for role based information
-        .then(function (name, id, email, role) {
+        .then(response => {
+            console.log(response)
+            employeeName = response.name
+            employeeID = response.id
+            employeeEmail = response.email
+            employeeRole = response.role
             // create role type information
-            let roleType = "";
-            if (role === "Engineer") {
+            if (response.role === "Engineer") {
                 roleType = "GitHub username"
-            } else if (role === "Intern") {
+            } else if (response.role === "Intern") {
                 roleType = "school name"
-            } else {
+            } else if (response.role === "Manager") {
                 roleType = "office phone number"
             }
             // get role based infomation and determine if more team members are needed
@@ -81,20 +95,20 @@ function createMember() {
                 }
             ])
                 // create a team member isntance
-                .then(function (roleType, moreMember) {
-                    let newTeamMember = "";
-                    if (role === "Manager") {
-                        newTeamMember = new Manager(name, id, email, roleType)
-                    } else if (role === "Engineer") {
-                        newTeamMember = new Engineer(name, id, email, roleType)
+                .then(res => {
+                    console.log(res)
+                    if (employeeRole === "Manager") {
+                        newTeamMember = new Manager(employeeName, employeeID, employeeEmail, res.roleType)
+                    } else if (employeeRole === "Engineer") {
+                        newTeamMember = new Engineer(employeeName, employeeID, employeeEmail, res.roleType)
                     } else {
-                        newTeamMember = new Intern(name, id, email, roleType)
+                        newTeamMember = new Intern(employeeName, employeeID, employeeEmail, res.roleType)
                     }
                     // add instance to team member array
                     //consonle.log(newTeamMember)
                     teamMemberArr.push(newTeamMember)
                     // loop through team members until complete
-                    if (moreMember === "yes") {
+                    if (res.moreMember === "yes") {
                         createMember()
                     }
                     createHTML()
@@ -108,7 +122,7 @@ function createHTML() {
     if (!fs.existsSync(OUTPUT_DIR)) {
         fs.mkdirSync(OUTPUT_DIR)
     }
-    fs.writeFileSync(outputPath, render(teamMemberArr))
+    fs.writeFileSync(outputPath, render(teamMemberArr), "utf-8")
 }
 
 // start the application

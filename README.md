@@ -3,6 +3,7 @@
 ## Description
 
 This is a command line interface (CLI) tool that will generate HTML code that contains your teams information
+![homepage](https://user-images.githubusercontent.com/35375289/92425657-7ff8a980-f14d-11ea-9d65-5db49805e6e6.png)
 
 ## Table of Contents
 

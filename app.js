@@ -9,25 +9,107 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const teamMemberArr = [];
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // function to start app
-function appStart() { }
+function appStart() {
+    createHTML();
+    createMember();
+}
 
 // function to create a team member
-function createMember() { }
+function createMember() {
+    // get basic employee information
+    inquirer.prompt([
+        {
+            name: 'name',
+            type: 'input',
+            message: 'Enter team member name: ',
+        },
+        {
+            name: 'id',
+            type: 'input',
+            message: 'Enter id of team member: ',
+        },
+        {
+            name: 'email',
+            type: 'input',
+            message: 'Enter team member email: '
+        },
+        {
+            name: 'role',
+            type: 'list',
+            message: 'Select team member role',
+            choices: [
+                'Manager',
+                'Engineer',
+                'Intern'
+            ]
+        }
+    ])
+        // create a selector for role based information
+        .then(function (name, id, email, role) {
+            // create role type information
+            let roleType = "";
+            if (role === "Engineer") {
+                roleType = "GitHub username"
+            } else if (role === "Intern") {
+                roleType = "school name"
+            } else {
+                roleType = "office phone number"
+            }
+            // get role based infomation and determine if more team members are needed
+            inquirer.prompt([
+                {
+                    name: 'roleType',
+                    type: 'input',
+                    message: `Enter team member ${roleType}`
+
+                },
+                {
+                    name: 'moreMember',
+                    type: 'list',
+                    message: 'Do you need to add another team member?',
+                    choices: [
+                        'yes',
+                        'no'
+                    ]
+                }
+            ])
+                // create a team member isntance
+                .then(function (roleType, moreMember) {
+                    let newTeamMember = "";
+                    if (role === "Manager") {
+                        newTeamMember = new Manager(name, id, email, roleType)
+                    } else if (role === "Engineer") {
+                        newTeamMember = new Engineer(name, id, email, roleType)
+                    } else {
+                        newTeamMember = new Intern(name, id, email, roleType)
+                    }
+                    // add instance to team member array
+                    //consonle.log(newTeamMember)
+                    teamMemberArr.push(newTeamMember)
+                    // loop through team members until complete
+                    if (moreMember === "yes") {
+                        createMember()
+                    }
+                    createHTML()
+                })
+        })
+}
 
 // function to create an html page
-function createHTML() { }
-
-// function to add team members to page
-function addTeamMember() { }
-
-// function to close html page
-function closeHTML() { }
+function createHTML() {
+    // check if output directory exists
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, render(teamMemberArr))
+}
 
 // start the application
 appStart()
